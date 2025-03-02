@@ -3,7 +3,7 @@ import { generateToken } from "../utils/jwt.js"
 export const login = async (req, res) => {
     try {
         if (!req.user) {
-            return res.status(401).render("templates/error", {error: "Algún dato no es correcto"})
+            return res.status(401).render("templates/error", {error: "Ups! Algún dato no es correcto"})
         } else {
             const token = generateToken(req.user)
             req.session.user = {
@@ -31,7 +31,7 @@ export const register = async (req, res) => {
         if (!req.user) {
             return res.status(400).render("templates/error", {error: "El correo electrónico ya se ha registrado"})
         } else {
-            res.status(201).redirect("/")
+            res.status(201).redirect("/login")
         }
     } catch (error) {
         console.log("Error en el registro del usuario:\n", error)
@@ -43,7 +43,7 @@ export const register = async (req, res) => {
 export const githubLogin = async (req, res) => {
     try {
         if(!req.user) {
-            return res.status(400).render("templates/error", {error: "Algún dato no es correcto"})
+            return res.status(400).render("templates/error", {error: "Ups! Algún dato no es correcto"})
         } else {
             req.session.user = {
                 email: req.user.email,

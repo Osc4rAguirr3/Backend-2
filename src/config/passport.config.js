@@ -1,3 +1,4 @@
+import 'dotenv/config'
 import passport from "passport"
 import local from "passport-local"
 import GithubStrategy from "passport-github2"
@@ -25,7 +26,9 @@ const initializePassport = () => {
         
         try {
             const {firstName, lastName, email, age, password} = req.body
+
             const userExists = await userModel.findOne({ email: email })
+
             if (!userExists) {
                 const newUser = await userModel.create({
                     firstName,
@@ -62,7 +65,7 @@ const initializePassport = () => {
 
     passport.use("github", new GithubStrategy({
         clientID: "Iv23li6s2aEEYiF1UJXH",
-        clientSecret: "f0570d6ba6b94e56ebadab0a4b999ad7bc8d9658",
+        clientSecret: process.env.SECRET_GITHUB,
         callbackURL: "http://localhost:8080/api/sessions/githubcallback"
     }, async (accessToken, refreshToken, profile, done) => {
         try {
@@ -93,7 +96,7 @@ const initializePassport = () => {
 
     passport.use("jwt", new JWTStrategy({
         jwtFromRequest: ExtractJWT.fromExtractors([cookieExtractor]),
-        secretOrKey: "JWTSecret"
+        secretOrKey: process.env.SECRET_JWT
     }, async (jwt_payload, done) => {
         try {
             return done(null, jwt_payload.user)

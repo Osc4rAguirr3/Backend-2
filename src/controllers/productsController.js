@@ -23,7 +23,7 @@ export const getProducts = async (req, res) => {
 
         products.isValid = !(page <= 0 || page > products.totalPages)
 
-        console.log(products)
+
         console.log("Es válido?", products.isValid)
         console.log("Links,", products.nextLink, products.prevLink)
         res.status(200).render("templates/home", {products})
@@ -43,6 +43,7 @@ export const getProduct = async (req, res) => {
         } else {
             return res.status(404).render("templates/error", {error: "Producto no encontrado"})
         }
+        console.log("\nFunción: getProduct\nEl producto consultado es:\n", product)
     } catch (error) {
         console.log(error)
         res.status(500).render("templates/error", {error})
